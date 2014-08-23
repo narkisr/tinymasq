@@ -33,8 +33,9 @@
     (let [pkt (packet (byte-array 1024))]
       (.receive @udp-server pkt)
       (let [message (Message. (.getData pkt)) record (.getQuestion message)
-            host (.toString (.getName record) false)]
-        (.addRecord message (record-of host (lookup host)) Section/ANSWER)
+            host (.toString (.getName record) false) ip (lookup host)]
+        (when ip
+          (.addRecord message (record-of host ip) Section/ANSWER))
         (.setData pkt (.toWire message))
         (.send @udp-server pkt)))))
 
