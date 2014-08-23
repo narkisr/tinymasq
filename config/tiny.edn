@@ -1,0 +1,7 @@
+{
+ :udp-port 1234 
+ :ttl 3600000
+ :redis {
+   :host "localhost"        
+ }
+}
