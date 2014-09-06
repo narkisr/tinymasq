@@ -6,7 +6,16 @@
       [org.clojure/clojure "1.5.1"]
       [aleph "0.3.3"]
       [com.taoensso/carmine "2.6.2"] 
-      [dnsjava/dnsjava "2.1.6"]]
+      [dnsjava/dnsjava "2.1.6"]
+      [com.taoensso/timbre "2.6.3"]
+      ; http api
+      [swag "0.2.7"]
+      [ring-middleware-format "0.3.0"]
+      [ring/ring-jetty-adapter "1.2.0"]
+      [ring "1.3.0"]
+      [compojure "1.1.8" :exclusions  [ring/ring-core]]
+
+                 ]
   
   :main tinymasq.core
 
