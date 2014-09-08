@@ -69,8 +69,8 @@
   (default-key)
   (run-jetty (app)
      {:port 8081 :join? false
-        :ssl? true 
-        :keystore (ssl-conf :keystore)
-        :key-password  (ssl-conf :password)
-        :ssl-port 8444})
+      :ssl? true 
+      :keystore (ssl-conf :keystore)
+      :key-password  (ssl-conf :password)
+      :ssl-port 8444})
   (read-write-loop))
