@@ -5,11 +5,17 @@ Tinymasq is a simple pure JVM based DNS forwarder
 # Usage
 
 
+API:
+
 ```bash
-# Adding hosts
+# Adding 
 $ curl https://localhost:8444/hosts -H Content-Type: application/json -d {"hostname":"foo","ip":"1.2.3.4"} -k
-# updating hosts
-$ curl https://localhost:8444/hosts -H Content-Type: application/json -d {"hostname":"foo","ip":"1.2.3.4"} -k
+# Updating 
+$ curl -X PUT https://localhost:8444/hosts -H Content-Type: application/json -d {"hostname":"foo","ip":"1.2.3.4"} -k
+# Deleting 
+$ curl -X DELETE https://localhost:8444/hosts -H Content-Type: application/json -d {"hostname":"foo"} -k
+# Listing
+$ curl -X GET https://localhost:8444/hosts -H Content-Type: application/json -d {"hostname":"foo"} -k
 ```
 
 TBD
