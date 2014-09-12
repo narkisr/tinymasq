@@ -1,0 +1,11 @@
+{
+ :udp-port 53
+ :ttl 3600000
+ :redis {
+   :host "localhost"        
+ }
+ :ssl {
+    :keystore "tinymasq.key"
+    :password "changeme"
+ }
+}
