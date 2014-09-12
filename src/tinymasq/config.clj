@@ -1,5 +1,5 @@
 (comment 
-  Celestial, Copyright 2013 Ronen Narkis, narkisr.com
+  tinymasq, Copyright 2013 Ronen Narkis, narkisr.com
   Licensed under the Apache License,
   Version 2.0  (the "License") you may not use this file except in compliance with the License. 
   You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0                     
@@ -12,11 +12,19 @@
 (ns tinymasq.config
   "configuration"
   (:require 
+    [clojure.java.io :refer (file)]
     [clojure.edn :as edn]
     [clojure.java.io :as io]))
 
+(def config-paths
+  ["/etc/tinymasq/tinymasq.edn" "config/tinymasq.edn"])
+
+(def path 
+  (first (filter #(.exists (file %)) config-paths)))
+
+
 (def tiny-config 
-  (-> "config/tiny.edn" slurp edn/read-string))
+  (-> path  slurp edn/read-string))
 
 (def ssl-conf (tiny-config :ssl))
 

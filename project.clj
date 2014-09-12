@@ -24,6 +24,7 @@
           [lein-midje "3.1.3"]
           [lein-ancient "0.5.5"]
           [lein-tar "2.0.0"]
+          [lein-tag "0.1.0"]
       ]
     }
   }
