@@ -11,13 +11,14 @@
 
 (ns tinymasq.core
   (:require 
+    [clojure.string :refer (split)]
     [ring.adapter.jetty :refer (run-jetty)] 
     [tinymasq.ssl :refer (generate-store)]
     [tinymasq.api :refer (app)]
     [taoensso.timbre :as timbre :refer (refer-timbre)]
     [clojure.java.io :refer (file)]
     [tinymasq.config :refer (tiny-config ssl-conf)]
-    [tinymasq.store :refer (lookup)])
+    [tinymasq.store :refer (get-host)])
   (:import 
     (org.xbill.DNS Message Section Name Type DClass Record) 
     (java.net InetAddress DatagramPacket DatagramSocket)))
@@ -45,16 +46,23 @@
   (let [n (Name/fromString host) ip (byte-array (map byte ip))]
     (Record/newRecord n Type/A DClass/IN (tiny-config :ttl) ip)))
 
+(defn into-bytes
+  "converting an ip 1.2.3.4 into bytes array [1 2 3 4]"
+   [ip]
+   (when ip
+     (byte-array (mapv #(.byteValue (Integer. %)) (split ip #"\.")))))
+
 (defn read-write-loop 
   []
   (while true
     (let [pkt (packet (byte-array 1024))]
       (.receive @udp-server pkt)
       (let [message (Message. (.getData pkt)) record (.getQuestion message)
-            host (.toString (.getName record) false) ip (lookup host)]
+            host (.toString (.getName record) false) ip (get-host host)]
         (when ip
-          (.addRecord message (record-of host ip) Section/ANSWER))
+          (.addRecord message (record-of host (into-bytes ip)) Section/ANSWER))
         (.setData pkt (.toWire message))
+        (debug "Sending" host ip)
         (.send @udp-server pkt)))))
 
 (defn default-key
@@ -74,3 +82,4 @@
       :key-password  (ssl-conf :password)
       :ssl-port 8444})
   (read-write-loop))
+

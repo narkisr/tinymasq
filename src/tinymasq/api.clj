@@ -12,6 +12,7 @@
 (ns tinymasq.api
   "Add/Remove hosts"
   (:require 
+    [tinymasq.store :refer (add-host update-host del-host get-host)]
     [compojure.core :refer (defroutes routes)] 
     [ring.middleware.ssl :refer (wrap-ssl-redirect)]
     [swag.model :refer (wrap-swag)]
@@ -23,13 +24,19 @@
 
 (defroutes hosts 
   (POST "/hosts" {{hostname :hostname ip :ip} :params}
+    (add-host hostname ip)
     {:status 200 :body "host added"})
   (PUT "/hosts" {{hostname :hostname ip :ip} :params}
+    (add-host hostname ip)
     {:status 200 :body "host updated"})
   (DELETE "/hosts" {{hostname :hostname} :params}
+    (del-host hostname)
     {:status 200 :body "host removed"})
-  (GET "/hosts" {{ip :ip} :params}
-    {:status 200 :body {:ip "1.2.3.4"}})
+  (GET "/hosts" {{hostname :hostname} :params}
+    (if-let [ip (get-host hostname)]
+      {:status 200 :body {:ip ip}}
+      {:status 404 :body "hostname not found"}
+      ))
   )
 
 (defn app []
