@@ -1,9 +1,10 @@
 (ns tinymasq.test.store
   (:use midje.sweet)  
+  (:import java.lang.AssertionError)
   (:require 
     [tinymasq.store :refer (add-host del-host update-host get-host)]))
 
-(fact "adding hosts" filters
+(fact "legal hosts storage" filters
    (del-host "foo")
    (add-host "foo" "1.2.3.4") => "OK"
    (get-host "foo") => "1.2.3.4"
@@ -11,4 +12,11 @@
    (get-host "foo") => "1.2.3.5"
   )
 
-
+(fact "faulty hosts storage" filters
+   (del-host "foo")
+   (add-host "foo" "1.2.3.4") => "OK"
+   (add-host "foo" "1.2.3.4") => (throws AssertionError)
+   (update-host "foo" "1.2.3.5") => "OK"
+   (del-host "bar")
+   (update-host "bar" "1.2.3.5") => (throws AssertionError)
+ )
