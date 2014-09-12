@@ -10,6 +10,7 @@
   limitations under the License.)
 
 (ns tinymasq.core
+  (:gen-class true)
   (:require 
     [clojure.string :refer (split)]
     [ring.adapter.jetty :refer (run-jetty)] 
@@ -72,7 +73,7 @@
     (info "generating a default keystore")
     (generate-store (ssl-conf :keystore) (ssl-conf :password))))
 
-(defn -main []
+(defn -main [& args]
   (start-udp-server)
   (default-key)
   (run-jetty (app)
