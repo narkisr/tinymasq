@@ -19,10 +19,16 @@
   :profiles {
     :dev {
       :dependencies [[midje "1.6.3"]]
-      :plugins [[lein-midje "3.1.3"] [lein-ancient "0.5.5"]]
+      :plugins [
+          [lein-midje "3.1.3"]
+          [lein-ancient "0.5.5"]
+          [lein-tar "2.0.0"]
+      ]
     }
   }
-  
+
+  :aot [tinymasq.core]
+ 
   :main tinymasq.core
 
 )
