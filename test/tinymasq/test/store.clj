@@ -15,8 +15,8 @@
 (fact "faulty hosts storage" filters
    (del-host "foo")
    (add-host "foo" "1.2.3.4") => "OK"
-   (add-host "foo" "1.2.3.4") => (throws AssertionError)
+   (add-host "foo" "1.2.3.4") => (throws Exception)
    (update-host "foo" "1.2.3.5") => "OK"
    (del-host "bar")
-   (update-host "bar" "1.2.3.5") => (throws AssertionError)
+   (update-host "bar" "1.2.3.5") => (throws Exception)
  )
