@@ -4,8 +4,15 @@
  :redis {
    :host "localhost"        
  }
+
  :ssl {
     :keystore "tinymasq.key"
     :password "changeme"
  }
+
+ :logging {
+   :path "/var/log/tinymasq.log"
+   :level :info
+ }
+
 }
