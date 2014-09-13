@@ -27,7 +27,6 @@
 (defn assert-op 
   "Checking that the redis update/insert passed" 
   [action host res]
-  (info res)
   (if (= res "OK")
     true
     (throw (Exception. (<< "Failed to ~{action} ~{host}")))))
