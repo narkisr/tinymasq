@@ -12,6 +12,8 @@
 (ns tinymasq.api
   "Add/Remove hosts"
   (:require 
+    [clojure.core.strint :refer (<<)]
+    [taoensso.timbre :as timbre :refer (refer-timbre)]
     [tinymasq.store :refer (add-host update-host del-host get-host)]
     [compojure.core :refer (defroutes routes)] 
     [ring.middleware.ssl :refer (wrap-ssl-redirect)]
@@ -22,12 +24,25 @@
     )
   )
 
+(refer-timbre)
+
+(defn error-wrap
+  "A catch all error handler"
+  [app]
+  (fn [req]
+    (try 
+      (app req)
+      (catch Throwable e 
+        (error e)
+        {:body (<< "Unexpected error ~(.getMessage e) of type ~(class e) contact admin for more info") :status 500}))))
+
+
 (defroutes hosts 
   (POST "/hosts" {{hostname :hostname ip :ip} :params}
     (add-host hostname ip)
     {:status 200 :body "host added"})
   (PUT "/hosts" {{hostname :hostname ip :ip} :params}
-    (add-host hostname ip)
+    (update-host hostname ip)
     {:status 200 :body "host updated"})
   (DELETE "/hosts" {{hostname :hostname} :params}
     (del-host hostname)
@@ -43,5 +58,7 @@
   (-> 
     (routes hosts)
     (wrap-ssl-redirect :ssl-port 8444)
-    (wrap-restful-format :formats [:json-kw :edn :yaml-kw :yaml-in-html])))
+    (wrap-restful-format :formats [:json-kw :edn :yaml-kw :yaml-in-html])
+    (error-wrap) 
+    ))
 
