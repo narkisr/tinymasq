@@ -28,6 +28,9 @@
       ]
     }
   }
+  :set-version {
+    :updates [{:path "src/tinymasq/core.clj" :search-regex #"\"\d+\.\d+\.\d+\""}]}
+
 
   :aot [tinymasq.core]
  

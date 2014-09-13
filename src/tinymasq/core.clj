@@ -86,6 +86,8 @@
    (set-level! (log-conf :level)))
 
 
+(def version "0.0.3")
+
 (defn -main [& args]
   (setup-logging)
   (start-udp-server)
@@ -96,5 +98,6 @@
       :keystore (ssl-conf :keystore)
       :key-password  (ssl-conf :password)
       :ssl-port 8444})
+  (info "Tinymasq" version "is running")
   (read-write-loop))
 
