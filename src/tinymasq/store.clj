@@ -12,13 +12,25 @@
 (ns tinymasq.store
   "host lookup"
   (:require  
+    [taoensso.timbre :as timbre :refer (refer-timbre)]
+    [clojure.core.strint :refer (<<)]
     [taoensso.carmine :as car :refer  (wcar)]
     [tinymasq.config :refer (tiny-config)]))
+
+(refer-timbre)
 
 (def server-conn {:pool {} :spec (tiny-config :redis)}) 
 
 (defmacro wcar* [& body] 
   `(car/wcar server-conn ~@body))
+
+(defn assert-op 
+  "Checking that the redis update/insert passed" 
+  [action host res]
+  (info res)
+  (if (= res "OK")
+    true
+    (throw (Exception. (<< "Failed to ~{action} ~{host}")))))
 
 (defn get-host 
   "get host ip"
@@ -28,13 +40,13 @@
 (defn add-host 
   "Adding hostname -> ip" 
   [host ip]
-  {:post [(= % "OK")]}
+  {:post [(assert-op "add" host %)]}
   (wcar* (car/set host ip "NX")))
 
 (defn update-host 
   "Update hostname -> ip" 
   [host ip]
-  {:post [(= % "OK")]}
+  {:post [(assert-op "add" host %)]}
   (wcar* (car/set host ip "XX")))
 
 (defn del-host 
