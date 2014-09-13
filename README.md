@@ -1,9 +1,8 @@
 # Intro
 
-Tinymasq is a simple pure JVM based DNS forwarder
+Tinymasq,  Clojure based DNS server.
 
 # Usage
-
 
 API:
 
@@ -18,7 +17,11 @@ $ curl -X DELETE https://localhost:8444/hosts -H Content-Type: application/json 
 $ curl -X GET https://localhost:8444/hosts -H Content-Type: application/json -d {"hostname":"foo"} -k
 ```
 
-TBD
+DNS lookup:
+
+```bash
+$ dig @localhost bar.com -p 53
+```
 
 # Copyright and license
 
