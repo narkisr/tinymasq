@@ -17,9 +17,7 @@
     [tinymasq.store :refer (add-host update-host del-host get-host)]
     [compojure.core :refer (defroutes routes)] 
     [ring.middleware.ssl :refer (wrap-ssl-redirect)]
-    [swag.model :refer (wrap-swag)]
     [ring.middleware.format :refer (wrap-restful-format)]
-    [swag.core :refer (GET- POST- PUT- DELETE- defroutes- errors)]
     [compojure.core :refer (GET POST PUT DELETE)]
     )
   )
