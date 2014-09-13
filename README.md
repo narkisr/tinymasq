@@ -2,6 +2,8 @@
 
 Tinymasq,  Clojure based DNS server.
 
+[![Build Status](https://travis-ci.org/narkisr/tinymasq.png)](https://travis-ci.org/narkisr/tinymasq)
+
 # Usage
 
 API:
