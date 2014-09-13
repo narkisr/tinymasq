@@ -1,5 +1,5 @@
 (comment 
-  Celestial, Copyright 2013 Ronen Narkis, narkisr.com
+  Tinymasq, Copyright 2013 Ronen Narkis, narkisr.com
   Licensed under the Apache License,
   Version 2.0  (the "License") you may not use this file except in compliance with the License. 
   You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0                     
@@ -16,9 +16,9 @@
     [ring.adapter.jetty :refer (run-jetty)] 
     [tinymasq.ssl :refer (generate-store)]
     [tinymasq.api :refer (app)]
-    [taoensso.timbre :as timbre :refer (refer-timbre)]
+    [taoensso.timbre :as timbre :refer (refer-timbre set-level! set-config!)]
     [clojure.java.io :refer (file)]
-    [tinymasq.config :refer (tiny-config ssl-conf)]
+    [tinymasq.config :refer (tiny-config ssl-conf log-conf)]
     [tinymasq.store :refer (get-host)])
   (:import 
     (org.xbill.DNS Message Section Name Type DClass Record) 
@@ -78,7 +78,16 @@
     (info "generating a default keystore")
     (generate-store (ssl-conf :keystore) (ssl-conf :password))))
 
+(defn setup-logging 
+  "Sets up logging configuration"
+  []
+   (set-config! [:shared-appender-config :spit-filename] (log-conf :path)) 
+   (set-config! [:appenders :spit :enabled?] true) 
+   (set-level! (log-conf :level)))
+
+
 (defn -main [& args]
+  (setup-logging)
   (start-udp-server)
   (default-key)
   (run-jetty (app)

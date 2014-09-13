@@ -4,8 +4,14 @@
  :redis {
    :host "localhost"        
  }
+
  :ssl {
     :keystore "tinymasq.key"
     :password "hie3Enga"
+ }
+
+ :logging {
+   :path "target/tinymasq.log"
+   :level :debug
  }
 }

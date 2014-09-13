@@ -28,3 +28,5 @@
 
 (def ssl-conf (tiny-config :ssl))
 
+(def log-conf (tiny-config :logging))
+
