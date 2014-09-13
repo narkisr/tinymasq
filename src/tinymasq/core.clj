@@ -53,17 +53,22 @@
    (when ip
      (byte-array (mapv #(.byteValue (Integer. %)) (split ip #"\.")))))
 
+(defn normalized-host 
+   "removes last . from host" 
+   [host]
+  (reduce str (butlast host)))
+
 (defn read-write-loop 
   []
   (while true
     (let [pkt (packet (byte-array 1024))]
       (.receive @udp-server pkt)
       (let [message (Message. (.getData pkt)) record (.getQuestion message)
-            host (.toString (.getName record) false) ip (get-host host)]
+            host (.toString (.getName record) false) ip (get-host (normalized-host host))]
         (when ip
           (.addRecord message (record-of host (into-bytes ip)) Section/ANSWER))
         (.setData pkt (.toWire message))
-        (debug "Sending" host ip)
+        (debug "Query result for" host "is" ip)
         (.send @udp-server pkt)))))
 
 (defn default-key
