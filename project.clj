@@ -7,8 +7,8 @@
       [com.taoensso/carmine "2.7.0"] 
       [dnsjava/dnsjava "2.1.6"]
       [com.taoensso/timbre "3.3.1"]
+      [org.clojure/core.incubator "0.1.3"]
       ; http api
-      [swag "0.2.7"]
       [ring/ring-ssl "0.2.1"]
       [ring-middleware-format "0.4.0"]
       [ring/ring-jetty-adapter "1.3.1"]
