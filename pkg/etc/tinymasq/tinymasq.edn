@@ -15,4 +15,12 @@
    :level :info
  }
 
+ :users {
+   "admin" {
+      :username "admin" 
+      :password "$2a$10$z6hMDrrklsSBtBujzLyAqu7HuMdrUxvrZRCgrylGRab9xB9XF6Bgu" 
+      :roles #{:tinymasq.api/admin}
+    }
+  }
+
 }
