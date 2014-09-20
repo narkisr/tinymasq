@@ -1,4 +1,4 @@
-(defproject tinymasq "0.0.6"
+(defproject tinymasq "0.0.7"
   :description "A malable DNS forwarder"
   :url "https://github.com/narkisr/tinymasq"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
