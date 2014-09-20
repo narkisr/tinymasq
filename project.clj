@@ -12,6 +12,7 @@
       [ring/ring-ssl "0.2.1"]
       [ring-middleware-format "0.4.0"]
       [ring/ring-jetty-adapter "1.3.1"]
+      [com.cemerick/friend "0.2.1"] 
       [ring "1.3.1"]
       [compojure "1.1.9" :exclusions  [ring/ring-core]]]
   
@@ -28,8 +29,10 @@
       ]
     }
   }
+
   :set-version {
-    :updates [{:path "src/tinymasq/core.clj" :search-regex #"\"\d+\.\d+\.\d+\""}]}
+    :updates [{:path "src/tinymasq/core.clj" :search-regex #"\"\d+\.\d+\.\d+\""}]
+  }
 
 
   :aot [tinymasq.core]

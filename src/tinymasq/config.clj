@@ -22,11 +22,12 @@
 (def path 
   (first (filter #(.exists (file %)) config-paths)))
 
-
 (def tiny-config 
   (-> path  slurp edn/read-string))
 
 (def ssl-conf (tiny-config :ssl))
 
 (def log-conf (tiny-config :logging))
+
+(def users (tiny-config :users))
 

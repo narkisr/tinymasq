@@ -12,6 +12,7 @@
 (ns tinymasq.api
   "Add/Remove hosts"
   (:require 
+    [tinymasq.config :refer (users)]
     [clojure.core.strint :refer (<<)]
     [taoensso.timbre :as timbre :refer (refer-timbre)]
     [tinymasq.store :refer (add-host update-host del-host get-host)]
@@ -19,6 +20,9 @@
     [ring.middleware.ssl :refer (wrap-ssl-redirect)]
     [ring.middleware.format :refer (wrap-restful-format)]
     [compojure.core :refer (GET POST PUT DELETE)]
+    [cemerick.friend :as friend]
+    (cemerick.friend [workflows :as workflows]
+                     [credentials :as creds])
     )
   )
 
@@ -52,11 +56,28 @@
       ))
   )
 
+(def user #{::user})
+(def admin #{::admin})
+
+(derive ::admin ::user)
+
+(defn sign-in-resp 
+   [req]
+   {:status 401 :body "not valid creds"})
+
+(println users)
+(defn secured-app [routes]
+  (friend/authenticate 
+    (friend/wrap-authorize routes user) 
+    {:allow-anon? false
+     :credential-fn (partial creds/bcrypt-credential-fn users)
+     :unauthenticated-handler sign-in-resp 
+     :workflows [(workflows/http-basic :realm "basic-tinymasq")]})) 
+
 (defn app []
-  (-> 
-    (routes hosts)
+  (-> (routes hosts)
+    (secured-app)
     (wrap-ssl-redirect :ssl-port 8444)
     (wrap-restful-format :formats [:json-kw :edn :yaml-kw :yaml-in-html])
     (error-wrap) 
     ))
-
