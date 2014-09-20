@@ -65,7 +65,6 @@
    [req]
    {:status 401 :body "not valid creds"})
 
-(println users)
 (defn secured-app [routes]
   (friend/authenticate 
     (friend/wrap-authorize routes user) 

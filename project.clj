@@ -8,6 +8,7 @@
       [dnsjava/dnsjava "2.1.6"]
       [com.taoensso/timbre "3.3.1"]
       [org.clojure/core.incubator "0.1.3"]
+      [org.clojure/core.cache "0.6.3"] 
       ; http api
       [ring/ring-ssl "0.2.1"]
       [ring-middleware-format "0.4.0"]
@@ -16,7 +17,7 @@
       [ring "1.3.1"]
       [compojure "1.1.9" :exclusions  [ring/ring-core]]]
   
-  :exclusions [org.clojure/clojure]
+  :exclusions [org.clojure/clojure org.clojure/core.cache]
   :profiles {
     :dev {
       :dependencies [[midje "1.6.3"]]
