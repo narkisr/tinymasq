@@ -25,6 +25,12 @@ DNS lookup:
 $ dig @localhost bar.com -p 53
 ```
 
+Importing an existing hosts file:
+
+```bash
+# TBD
+$ tinyimport /etc/hosts
+```
 # Copyright and license
 
 Copyright [2014] [Ronen Narkis]
