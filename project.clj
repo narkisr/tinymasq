@@ -36,7 +36,9 @@
   }
 
 
-  :aot [tinymasq.core]
+  :aliases {"import" ["run" "-m" "tinymasq.import"]}
+
+  :aot [tinymasq.core tinymasq.import]
  
   :main tinymasq.core
 
