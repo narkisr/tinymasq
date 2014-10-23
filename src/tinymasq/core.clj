@@ -86,7 +86,7 @@
    (set-level! (log-conf :level)))
 
 
-(def version "0.0.7")
+(def version "0.0.8")
 
 (defn -main [& args]
   (setup-logging)
