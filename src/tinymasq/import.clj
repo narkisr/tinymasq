@@ -3,7 +3,7 @@
   (:gen-class true)
   (:require 
     [clojure.string :refer (split)] 
-    [tinymasq.store :refer (add-host)]))
+    [tinymasq.store :refer (add-host get-host del-host update-host)]))
 
 
 (def local #{"127.0.0.1" "127.0.1.1"})
@@ -18,7 +18,13 @@
   [file]
   (doseq [[ip f s] (slurp-hosts file)]
     (when (and (re-matches #"\d+.\d+.\d+.\d+" ip) (not (local ip)))
-      (add-host f ip)
-      (println "imported " f ip))))
+      (if (get-host f) 
+        (do
+          (update-host f ip)
+          (println "re-imported " f ip)) 
+        (do 
+          (add-host f ip)
+          (println "imported " f ip)))
+      )))
 
 (defn -main [f & args] (import-hosts f))
