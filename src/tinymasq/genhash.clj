@@ -1,6 +1,7 @@
 (ns tinymasq.genhash
   "generating bcrypt hash"
-   (cemerick.friend [credentials :as creds])
+   (:require
+     (cemerick.friend [credentials :as creds]))
  )
 
 (defn main-
