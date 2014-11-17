@@ -68,7 +68,7 @@
         (when ip
           (.addRecord message (record-of host (into-bytes ip)) Section/ANSWER))
         (.setData pkt (.toWire message))
-        (debug "Query result for" host "is" ip)
+        (trace "Query result for" host "is" ip)
         (.send @udp-server pkt)))))
 
 (defn default-key

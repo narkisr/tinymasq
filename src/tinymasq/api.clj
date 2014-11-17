@@ -42,14 +42,18 @@
 (defroutes hosts 
   (POST "/hosts" {{hostname :hostname ip :ip} :params}
     (add-host hostname ip)
+    (trace "adding" hostname "->" ip)
     {:status 200 :body "host added"})
   (PUT "/hosts" {{hostname :hostname ip :ip} :params}
     (update-host hostname ip)
+    (trace "updating" hostname "->" ip)
     {:status 200 :body "host updated"})
   (DELETE "/hosts" {{hostname :hostname} :params}
+    (trace "clearing" hostname)
     (del-host hostname)
     {:status 200 :body "host removed"})
   (GET "/hosts" {{hostname :hostname} :params}
+    (trace "query" hostname)
     (if-let [ip (get-host hostname)]
       {:status 200 :body {:ip ip}}
       {:status 404 :body "hostname not found"}
