@@ -36,9 +36,13 @@
   }
 
 
-  :aliases {"import" ["run" "-m" "tinymasq.import"]}
+  :aliases {
+      "import" ["run" "-m" "tinymasq.import"]
+      "genhash" ["run" "-m" "tinymasq.genhash"]
+            
+  }
 
-  :aot [tinymasq.core tinymasq.import]
+  :aot [tinymasq.core tinymasq.import tinymasq.genhash]
  
   :main tinymasq.core
 
