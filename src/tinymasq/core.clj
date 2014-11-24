@@ -17,6 +17,7 @@
     [tinymasq.ssl :refer (generate-store)]
     [tinymasq.api :refer (app)]
     [taoensso.timbre :as timbre :refer (refer-timbre set-level! set-config!)]
+    [clojure.core.async :refer (thread go >! >!! <!! <! alts! dropping-buffer go-loop chan)]
     [clojure.java.io :refer (file)]
     [tinymasq.config :refer (tiny-config ssl-conf log-conf)]
     [tinymasq.store :refer (get-host)])
@@ -58,18 +59,40 @@
    [host]
   (reduce str (butlast host)))
 
-(defn read-write-loop 
+(def lookups (chan (dropping-buffer 100)))
+(def answers (chan (dropping-buffer 100)))
+
+(defn accept-loop 
   []
-  (while true
-    (let [pkt (packet (byte-array 1024))]
-      (.receive @udp-server pkt)
-      (let [message (Message. (.getData pkt)) record (.getQuestion message)
-            host (.toString (.getName record) false) ip (get-host (normalized-host host))]
+  (go 
+    (while true
+      (let [pkt (packet (byte-array 1024))]
+        (.receive @udp-server pkt)
+        (>! lookups pkt) 
+        ))))
+
+(defn process-loop 
+  "Async processing of packets" 
+  []
+  (go 
+    (while true
+      (let [pkt (<! lookups) message (Message. (.getData pkt)) 
+            record (.getQuestion message) host (.toString (.getName record) false)
+            ip (get-host (normalized-host host))]
         (when ip
           (.addRecord message (record-of host (into-bytes ip)) Section/ANSWER))
         (.setData pkt (.toWire message))
-        (trace "Query result for" host "is" ip)
-        (.send @udp-server pkt)))))
+        (>! answers [pkt host ip])
+        ))))
+
+(defn reply-loop 
+  "Sends back reponses" 
+  []
+  (go
+    (while true
+      (let [[pkt host ip] (<! answers)] 
+        (.send @udp-server pkt)
+        (trace "Query result for" host "is" ip)))))
 
 (defn default-key
   "Generates a default keystore if missing"
@@ -81,9 +104,9 @@
 (defn setup-logging 
   "Sets up logging configuration"
   []
-   (set-config! [:shared-appender-config :spit-filename] (log-conf :path)) 
-   (set-config! [:appenders :spit :enabled?] true) 
-   (set-level! (log-conf :level)))
+  (set-config! [:shared-appender-config :spit-filename] (log-conf :path)) 
+  (set-config! [:appenders :spit :enabled?] true) 
+  (set-level! (log-conf :level)))
 
 
 (def version "0.0.10")
@@ -93,11 +116,13 @@
   (start-udp-server)
   (default-key)
   (run-jetty (app)
-     {:port 8081 :join? false
-      :ssl? true 
-      :keystore (ssl-conf :keystore)
-      :key-password  (ssl-conf :password)
-      :ssl-port 8444})
+             {:port 8081 :join? false
+              :ssl? true 
+              :keystore (ssl-conf :keystore)
+              :key-password  (ssl-conf :password)
+              :ssl-port 8444})
   (info "Tinymasq" version "is running")
-  (read-write-loop))
+  (reply-loop)
+  (process-loop) 
+  (accept-loop))
 

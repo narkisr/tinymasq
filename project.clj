@@ -9,6 +9,7 @@
       [com.taoensso/timbre "3.3.1"]
       [org.clojure/core.incubator "0.1.3"]
       [org.clojure/core.cache "0.6.3"] 
+      [org.clojure/core.async "0.1.346.0-17112a-alpha"]
       ; http api
       [ring/ring-ssl "0.2.1"]
       [ring-middleware-format "0.4.0"]
