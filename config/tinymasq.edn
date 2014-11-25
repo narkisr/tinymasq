@@ -2,7 +2,7 @@
  :udp-port 1234 
  :ttl 3600000
  :redis {
-   :host "localhost"        
+   :host "192.168.1.25"        
  }
 
  :ssl {
