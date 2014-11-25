@@ -30,10 +30,10 @@
         (swap! results (fn [m] (assoc m :fail (inc (m :fail)))))
         ))))
 
-(defn dig-loop [c]
+(defn dig-loop [host c]
   (go 
     (while true
-      (let [{:keys [exit out err]} (sh "dig" "@localhost" "foo.com" "-p" "1234")]
+      (let [{:keys [exit out err]} (sh "dig" "@localhost" host "-p" "1234")]
         (if (= 0 exit)
           (>! succesful 1)
           (>! failed 1))))))
@@ -43,16 +43,16 @@
 
 (defn bench 
   "Running dig and counting responses" 
-  [c]
-   (map dig-loop (range c)))
+  [c host]
+   (map (partial dig-loop host) (range c)))
 
 (defn add-shutdown []
   (.addShutdownHook (Runtime/getRuntime) (Thread. (fn [] (info "final suammry:" @results)))))
 
-(defn -main [c & _] 
+(defn -main [c host & _] 
   (add-shutdown)
   (success-loop)
   (failed-loop)
   (set-interval #(info @results) 1000)
-  (info (bench (Integer. c))))
+  (info (bench (Integer. c) host)))
 
