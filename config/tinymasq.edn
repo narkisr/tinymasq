@@ -18,7 +18,8 @@
  :users {
    "admin" {
       :username "admin" 
-      :password "$2a$10$z6hMDrrklsSBtBujzLyAqu7HuMdrUxvrZRCgrylGRab9xB9XF6Bgu" 
+      ; foobar
+      :password "$2a$10$HSKhP8CsLGpM2sP/wNx2RuGgy0yDEGMKr6RY9g7fVB1VjGa5IaHGm"
       :roles #{:tinymasq.api/admin}
     }
   }
