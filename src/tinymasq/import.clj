@@ -13,18 +13,24 @@
   [path]
   (map #(split % #"\s+") (split (slurp path) #"\n")))
 
+(defn update-or-add 
+  "Adding or updateing an ip" 
+  [ip f]
+  (if (get-host f) 
+    (do
+      (update-host f ip)
+      (println "re-imported " f ip)) 
+    (do 
+      (add-host f ip)
+      (println "imported " f ip))))
+
 (defn import-hosts 
   "import hosts file into redis"
   [file]
   (doseq [[ip f s] (slurp-hosts file)]
     (when (and (re-matches #"\d+.\d+.\d+.\d+" ip) (not (local ip)))
-      (if (get-host f) 
-        (do
-          (update-host f ip)
-          (println "re-imported " f ip)) 
-        (do 
-          (add-host f ip)
-          (println "imported " f ip)))
-      )))
+      (if (re-matches #"\.*..*..*" f)
+        (update-or-add ip f)
+        (update-or-add ip s)))))
 
 (defn -main [f & args] (import-hosts f))
