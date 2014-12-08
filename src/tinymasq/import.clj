@@ -29,7 +29,7 @@
   [file]
   (doseq [[ip f s] (slurp-hosts file)]
     (when (and (re-matches #"\d+.\d+.\d+.\d+" ip) (not (local ip)))
-      (if (re-matches #"\.*..*..*" f)
+      (if (re-matches #".*\..*\..*" f)
         (update-or-add ip f)
         (update-or-add ip s)))))
 
