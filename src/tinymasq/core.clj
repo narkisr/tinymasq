@@ -12,7 +12,6 @@
 (ns tinymasq.core
   (:gen-class true)
   (:require 
-    [clojure.java.data :refer ( from-java)] 
     [clojure.string :refer (split)]
     [ring.adapter.jetty :refer (run-jetty)] 
     [tinymasq.ssl :refer (generate-store)]
