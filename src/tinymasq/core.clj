@@ -12,6 +12,7 @@
 (ns tinymasq.core
   (:gen-class true)
   (:require 
+    [clojure.java.data :refer ( from-java)] 
     [clojure.string :refer (split)]
     [ring.adapter.jetty :refer (run-jetty)] 
     [tinymasq.ssl :refer (generate-store)]
@@ -22,7 +23,7 @@
     [tinymasq.config :refer (tiny-config ssl-conf log-conf)]
     [tinymasq.store :refer (get-host)])
   (:import 
-    (org.xbill.DNS Message Section Name Type DClass Record) 
+    (org.xbill.DNS Message Section Name Type DClass SOARecord Record) 
     (java.net InetAddress DatagramPacket DatagramSocket)))
 
 (refer-timbre)
@@ -47,6 +48,16 @@
   [host ip]
   (let [n (Name/fromString host) ip (byte-array (map byte ip))]
     (Record/newRecord n Type/A DClass/IN (tiny-config :ttl) ip)))
+
+(defn soa-record 
+   "Start of [a zone of] authority record" 
+   []
+   (SOARecord.  
+     (Name/fromString "foo.local.") DClass/IN  3600
+     (Name/fromString "tinymasq.foo.local.") (Name/fromString "hostmaster.foo.local.")
+      1 3600 600 86400 3600
+     )
+  )
 
 (defn into-bytes
   "converting an ip 1.2.3.4 into bytes array [1 2 3 4]"
@@ -78,9 +89,13 @@
     (while true
       (let [pkt (<! lookups) message (Message. (.getData pkt)) 
             record (.getQuestion message) host (.toString (.getName record) false)
-            ip (get-host (normalized-host host))]
-        (when ip
-          (.addRecord message (record-of host (into-bytes ip)) Section/ANSWER))
+            ip (get-host (normalized-host host)) _type (.getType record)]
+        (trace  (.toString message))
+        (case _type
+          1 (when ip (.addRecord message (record-of host (into-bytes ip)) Section/ANSWER))
+          6 (.addRecord message (soa-record) Section/AUTHORITY)
+          (error "no valid result for" _type))
+        (trace  (.toString message))
         (.setData pkt (.toWire message))
         (>! answers [pkt host ip])
         ))))
