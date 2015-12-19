@@ -1,12 +1,12 @@
-(defproject tinymasq "0.1.2"
-  :description "A malable DNS forwarder"
+(defproject tinymasq "0.1.2-ffms-1"
+  :description "A mallable DNS forwarder"
   :url "https://github.com/narkisr/tinymasq"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
   :dependencies [
       [org.clojure/clojure "1.6.0"]
       [com.taoensso/carmine "2.12.1"]
       [dnsjava/dnsjava "2.1.7"]
-      [com.taoensso/timbre "4.1.4"]
+      [com.taoensso/timbre "3.3.1"]
       [org.clojure/core.incubator "0.1.3"]
       [org.clojure/core.cache "0.6.4"]
       [org.clojure/core.async "0.2.374"]
