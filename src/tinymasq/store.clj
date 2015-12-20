@@ -34,7 +34,7 @@
 
 (defn update-host
   "Update hostname -> ip"
-  [auth host ip &[description]
+  [auth host ip &[description]]
   {:post [(assert-op "add" host %)]}
   (wcar* (car/set host ip "XX")))
 
