@@ -2,3 +2,4 @@ services:
   - redis-server
 language: clojure
   - oraclejdk8
+script: "lein test"
