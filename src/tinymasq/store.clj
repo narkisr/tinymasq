@@ -20,28 +20,60 @@
     true
     (throw (Exception. (<< "Failed to ~{action} ~{host}")))))
 
+(defn- get-host-details
+  "get host details, given auth-token and name"
+  [auth host]
+  (let [host-details (wcar* (car/get host))
+        [rec-auth rec-ip rec-description] host-details]
+    (if (compare auth rec-auth)
+      host-details
+      nil)))
+
 (defn get-host
   "get host ip, given name and auth-token"
   [auth host]
-  (wcar* (car/get host)))
+  (let [[rec-auth rec-ip rec-description]  (get-host-details auth host)]
+    rec-ip))
+
 
 (defn add-host
   "Adding hostname -> ip, auth is the authentication-token
-  that is required for follow up operations,"
+  that is required for follow up operations, description is an optional text which may be displayed when listing the service"
   [auth host ip & [description]]
   {:post [(assert-op "add" host %)]}
-  (wcar* (car/set host ip "NX")))
+  (wcar* (car/set host
+                  (str (list auth ip description))
+                  "NX" )))
+
+(defn- access-permitted?
+  "Check whether change to a host is permitted.
+  This is true if the host does not exist or the correct auth-token is supplied"
+  [auth host]
+  (let [details (get-host-details auth host)]
+    (if details
+      (if (compare auth (second details)) ;;
+        true
+        nil)
+      nil)))
+
 
 (defn update-host
   "Update hostname -> ip"
   [auth host ip & [description]]
   {:post [(assert-op "add" host %)]}
-  (wcar* (car/set host ip "XX")))
+  (if (access-permitted? auth host)
+    (wcar* (car/set host
+                    (str (list auth ip description))
+                    "XX"))
+    nil))
 
 (defn del-host
   "Deleting a host"
   [auth host]
-  (wcar* (car/del host)))
+  (if (access-permitted? auth host)
+    (wcar* (car/del host))
+    nil))
+
 
 (defn list-hosts
   []

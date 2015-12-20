@@ -2,7 +2,8 @@
  :udp-port 1234
  :bind-address "127.0.0.1"
  :http-port 8081
- :ttl 3600000
+ :ttl 300
+ :entry-expiration-time-sec 300
  :redis {
    :host "localhost"
  }
