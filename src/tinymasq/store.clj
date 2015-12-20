@@ -1,10 +1,10 @@
 (ns tinymasq.store
   "host lookup"
   (:require
-    [taoensso.timbre :as timbre :refer (refer-timbre)]
-    [clojure.core.strint :refer (<<)]
-    [taoensso.carmine :as car :refer  (wcar)]
-    [tinymasq.config :refer (tiny-config)]))
+   [taoensso.timbre :as timbre :refer (refer-timbre)]
+   [clojure.core.strint :refer (<<)]
+   [taoensso.carmine :as car :refer  (wcar)]
+   [tinymasq.config :refer (tiny-config)]))
 
 (refer-timbre)
 
@@ -27,14 +27,14 @@
 
 (defn add-host
   "Adding hostname -> ip, auth is the authentication-token
-   that is required for follow up operations,"
+  that is required for follow up operations,"
   [auth host ip & [description]]
   {:post [(assert-op "add" host %)]}
   (wcar* (car/set host ip "NX")))
 
 (defn update-host
   "Update hostname -> ip"
-  [auth host ip &[description]]
+  [auth host ip & [description]]
   {:post [(assert-op "add" host %)]}
   (wcar* (car/set host ip "XX")))
 
@@ -44,6 +44,7 @@
   (wcar* (car/del host)))
 
 (defn list-hosts
+  []
   "list of known hosts"
   nil)
 
