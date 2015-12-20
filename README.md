@@ -14,8 +14,8 @@ fdyn is a simple trust-on-first-use DynDNS server which is primarly intended for
 
 # Installation
 Prerequisites
- * Linux or OSX
- * Leiningen on Java8 (7 won't work)
+ * Linux or OSX 
+ * http://leiningen.org on JDK8 (7 won't work)
  * Redis Server
 
 
