@@ -41,7 +41,7 @@
       "genhash" ["run" "-m" "tinymasq.genhash"]
   }
 
-  :aot [tinymasq.core tinymasq.import tinymasq.genhash tinymasq.bench]
+  :aot [tinymasq.core tinymasq.genhash tinymasq.store]
 
   :main tinymasq.core
 
