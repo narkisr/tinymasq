@@ -2,6 +2,14 @@
 
 fdyn,  Clojure based DDNS server.
 
+fdyn is a simple trust-on-first-use DynDNS server which is primarly intended for announcing local services in a wireless community network (Freifunk).
+
+## Features
+ * 'dyndns2' compatible update
+ * Trust-on-first-use: Pick random username & password on first entry update
+ * Entries expire when not updates
+ * Poor man's service dirctory: Page listing known services & description
+ * Optional: restriction to certain address ranges
 
 
 # Usage
