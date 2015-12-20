@@ -1,5 +1,5 @@
-services:
-  - redis-server
 language: clojure
   - oraclejdk8
+services:
+  - redis-server
 script: "lein test"
