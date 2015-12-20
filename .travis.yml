@@ -1,5 +1,6 @@
 language: clojure
+jdk:
   - oraclejdk8
 services:
   - redis-server
-script: "/usr/local/bin/lein2 midje"
+script: "lein2 midje"
