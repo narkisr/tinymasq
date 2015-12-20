@@ -2,4 +2,4 @@ language: clojure
   - oraclejdk8
 services:
   - redis-server
-script: "lein test"
+script: "/usr/local/bin/lein2 midje"
