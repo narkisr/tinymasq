@@ -1,6 +1,6 @@
 # Intro
 
-fdyn,  Clojure based DDNS server.
+fdyn,  Clojure based DDNS server. [![Build Status](https://travis-ci.org/kgbvax/fdyn.svg?branch=master)](https://travis-ci.org/kgbvax/fdyn)
 
 fdyn is a simple trust-on-first-use DynDNS server which is primarly intended for announcing local services in a wireless community network (Freifunk).
 
