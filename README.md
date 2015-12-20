@@ -7,9 +7,16 @@ fdyn is a simple trust-on-first-use DynDNS server which is primarly intended for
 ## Features
  * 'dyndns2' compatible update
  * Trust-on-first-use: Pick random username & password on first entry update
- * Entries expire when not updates
+ * Entries expire when not updated
  * Poor man's service dirctory: Page listing known services & description
  * Optional: restriction to certain address ranges
+ 
+
+# Installation
+Prerequisites
+ * Linux or OSX
+ * Leiningen on Java8 (7 won't work)
+ * Redis Server
 
 
 # Usage
@@ -44,7 +51,6 @@ $ tinyimport /etc/hosts
 # Copyright and license
 
 Copyright [2015] [Ingomar Otter]
-
 Based on tinymasq, Copyright [2014] [Ronen Narkis]
 
 Licensed under the Apache License, Version 2.0 (the "License");
