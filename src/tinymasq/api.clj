@@ -1,22 +1,22 @@
-(comment 
+(comment
   Tinymasq, Copyright 2013 Ronen Narkis, narkisr.com
   Licensed under the Apache License,
-  Version 2.0  (the "License") you may not use this file except in compliance with the License. 
-  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0                     
+  Version 2.0  (the "License") you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
   Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,                                      
+  distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.)
 
 (ns tinymasq.api
   "Add/Remove hosts"
-  (:require 
+  (:require
     [tinymasq.config :refer (users)]
     [clojure.core.strint :refer (<<)]
     [taoensso.timbre :as timbre :refer (refer-timbre)]
-    [tinymasq.store :refer (add-host update-host del-host get-host)]
-    [compojure.core :refer (defroutes routes)] 
+    [tinymasq.store :refer (update-host del-host get-host)]
+    [compojure.core :refer (defroutes routes)]
     [ring.middleware.ssl :refer (wrap-ssl-redirect)]
     [ring.middleware.format :refer (wrap-restful-format)]
     [compojure.core :refer (GET POST PUT DELETE)]
@@ -32,16 +32,16 @@
   "A catch all error handler"
   [app]
   (fn [req]
-    (try 
+    (try
       (app req)
-      (catch Throwable e 
+      (catch Throwable e
         (error e)
         {:body (<< "Unexpected error ~(.getMessage e) of type ~(class e) contact admin for more info") :status 500}))))
 
 
-(defroutes hosts 
+(defroutes hosts
   (POST "/hosts" {{hostname :hostname ip :ip} :params}
-    (add-host hostname ip)
+  ;  (add-host hostname ip)
     (trace "adding" hostname "->" ip)
     {:status 200 :body "host added"})
   (PUT "/hosts" {{hostname :hostname ip :ip} :params}
@@ -65,22 +65,22 @@
 
 (derive ::admin ::user)
 
-(defn sign-in-resp 
+(defn sign-in-resp
    [req]
    {:status 401 :body "not valid creds"})
 
 (defn secured-app [routes]
-  (friend/authenticate 
-    (friend/wrap-authorize routes user) 
+  (friend/authenticate
+    (friend/wrap-authorize routes user)
     {:allow-anon? false
      :credential-fn (partial creds/bcrypt-credential-fn users)
-     :unauthenticated-handler sign-in-resp 
-     :workflows [(workflows/http-basic :realm "basic-tinymasq")]})) 
+     :unauthenticated-handler sign-in-resp
+     :workflows [(workflows/http-basic :realm "basic-tinymasq")]}))
 
 (defn app []
   (-> (routes hosts)
     (secured-app)
     (wrap-ssl-redirect :ssl-port 8444)
     (wrap-restful-format :formats [:json-kw :edn :yaml-kw :yaml-in-html])
-    (error-wrap) 
+    (error-wrap)
     ))

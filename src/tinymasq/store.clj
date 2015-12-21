@@ -23,13 +23,10 @@
     (throw (Exception. (<< "Failed to ~{action} ~{host}")))))
 
 (defn- get-host-details
-  "get host details, given auth-token and name"
+  "get host details,  host name"
   [host]
-  (let [host-details (edn/read-string (wcar* (car/get host)))
-        [rec-auth rec-ip rec-description] host-details]
-    (if (compare auth rec-auth)
-      host-details
-      nil)))
+    (edn/read-string
+     (wcar* (car/get host))))
 
 (defn get-host
   "get host ip, given name and auth-token"
@@ -42,7 +39,7 @@
   "Check whether change to a host is permitted.
   This is true if the host does not exist or the correct auth-token is supplied"
   [auth host]
-  (let [details (get-host-details auth host)]
+  (let [details (get-host-details host)]
     (if (some? details)
       (if (= 0 (compare auth (first details)))
         true

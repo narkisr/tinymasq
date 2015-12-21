@@ -1,6 +1,6 @@
-(defproject tinymasq "0.1.2-ffms-1"
-  :description "A mallable DNS forwarder"
-  :url "https://github.com/narkisr/tinymasq"
+(defproject tinymasq "0.1.2-ffms-2"
+  :description "A DynDNS server for local services"
+  :url "https://github.com/kgbvax/fdyn"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
   :dependencies [
       [org.clojure/clojure "1.6.0"]
@@ -10,7 +10,6 @@
       [org.clojure/core.incubator "0.1.3"]
       [org.clojure/core.cache "0.6.4"]
       [org.clojure/core.async "0.2.374"]
-      ; http api
       [ring/ring-ssl "0.2.1"]
       [ring-middleware-format "0.7.0"]
       [ring/ring-jetty-adapter "1.4.0"]
@@ -33,7 +32,8 @@
   }
 
   :set-version {
-    :updates [{:path "src/tinymasq/core.clj" :search-regex #"\"\d+\.\d+\.\d+\""}]
+    :updates [{:path "src/tinymasq/core.clj" :search-regex #"\"\d+\.\d+\.\d+\""}
+              {:path "README.md" :no-snapshot true}]
   }
 
 

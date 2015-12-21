@@ -1,6 +1,7 @@
 # Intro
 
-fdyn,  Clojure based DDNS server. [![Build Status](https://travis-ci.org/kgbvax/fdyn.svg?branch=master)](https://travis-ci.org/kgbvax/fdyn)
+fdyn,  Clojure based DDNS server. [![Build Status](https://travis-ci.org/kgbvax/fdyn.svg?branch=master)](https://travis-ci.org/kgbvax/fdyn) - version 0.1.2
+
 
 fdyn is a simple trust-on-first-use DynDNS server which is primarly intended for announcing local services in a wireless community network (Freifunk).
 
@@ -10,30 +11,18 @@ fdyn is a simple trust-on-first-use DynDNS server which is primarly intended for
  * Entries expire when not updated
  * Poor man's service dirctory: Page listing known services & description
  * Optional: restriction to certain address ranges
- 
+
 
 # Installation
 Prerequisites
- * Linux or OSX 
+ * Linux or OSX
  * JDK8 (7 won't work)
- * http://leiningen.org 
+ * http://leiningen.org
  * http://redis.io Server
 
 
 # Usage
 
-API:
-
-```bash
-# Adding 
-$ curl -u admin:foobar https://localhost:8444/hosts -H Content-Type: application/json -d {"hostname":"foo","ip":"1.2.3.4"} -k
-# Updating 
-$ curl -u admin:foobar -X PUT https://localhost:8444/hosts -H Content-Type: application/json -d {"hostname":"foo","ip":"1.2.3.4"} -k
-# Deleting 
-$ curl -u admin:foobar -X DELETE https://localhost:8444/hosts -H Content-Type: application/json -d {"hostname":"foo"} -k
-# Listing
-$ curl -u admin:foobar -X GET https://localhost:8444/hosts -H Content-Type: application/json -d {"hostname":"foo"} -k
-```
 
 DNS lookup:
 
