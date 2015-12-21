@@ -1,5 +1,6 @@
+language: clojure
+jdk:
+  - oraclejdk8
 services:
   - redis-server
-language: clojure
-lein: lein2
-script: lein2 do clean, compile, midje
+script: "lein2 midje"

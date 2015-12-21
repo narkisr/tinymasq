@@ -1,8 +1,11 @@
 {
- :udp-port 1234 
- :ttl 3600000
+ :udp-port 1234
+ :bind-address "127.0.0.1"
+ :http-port 8081
+ :ttl 300
+ :entry-expiration-time-sec 300
  :redis {
-   :host "localhost"        
+   :host "localhost"
  }
 
  :ssl {
@@ -17,7 +20,7 @@
 
  :users {
    "admin" {
-      :username "admin" 
+      :username "admin"
       ; foobar
       :password "$2a$10$HSKhP8CsLGpM2sP/wNx2RuGgy0yDEGMKr6RY9g7fVB1VjGa5IaHGm"
       :roles #{:tinymasq.api/admin}
