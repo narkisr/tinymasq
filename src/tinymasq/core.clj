@@ -16,7 +16,8 @@
     [ring.adapter.jetty :refer (run-jetty)] 
     [tinymasq.ssl :refer (generate-store)]
     [tinymasq.api :refer (app)]
-    [taoensso.timbre :as timbre :refer (refer-timbre set-level! set-config!)]
+    [taoensso.timbre  :as timbre :refer (refer-timbre merge-config! set-level!)]
+    [taoensso.timbre.appenders.3rd-party.rolling :refer (rolling-appender) ] 
     [clojure.core.async :refer (thread go >! >!! <!! <! alts! dropping-buffer go-loop chan)]
     [clojure.java.io :refer (file)]
     [tinymasq.config :refer (tiny-config ssl-conf log-conf)]
@@ -101,13 +102,18 @@
     (info "generating a default keystore")
     (generate-store (ssl-conf :keystore) (ssl-conf :password))))
 
+(defn disable-coloring 
+   "See https://github.com/ptaoussanis/timbre" 
+   []
+  (merge-config! {:output-fn (partial timbre/default-output-fn  {:stacktrace-fonts {}})}))
+
 (defn setup-logging 
   "Sets up logging configuration"
   []
-  (set-config! [:shared-appender-config :spit-filename] (log-conf :path)) 
-  (set-config! [:appenders :spit :enabled?] true) 
-  (set-level! (log-conf :level)))
-
+   (merge-config! 
+     {:appenders {:rolling (rolling-appender {:path (log-conf :path) :pattern :weekly})}})
+   (disable-coloring)
+   (set-level! (log-conf :level)))
 
 (def version "0.2.0")
 

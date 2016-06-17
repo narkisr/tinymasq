@@ -4,9 +4,9 @@
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
   :dependencies [
       [org.clojure/clojure "1.8.0"]
-      [com.taoensso/carmine "2.11.1"] 
+      [com.taoensso/carmine "2.13.0"] 
       [dnsjava/dnsjava "2.1.6"]
-      [com.taoensso/timbre "4.1.4"]
+      [com.taoensso/timbre "4.4.0"]
       [org.clojure/core.incubator "0.1.3"]
       [org.clojure/core.cache "0.6.3"] 
       [org.clojure/core.async "0.1.346.0-17112a-alpha"]
