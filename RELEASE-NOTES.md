@@ -1,7 +1,9 @@
-# Tinymasq 0.2.0 (18/06/16):
+# Tinymasq 0.2.1 (18/06/16):
 
 ## Features
-Moving to latest Java 8 and Clojure 1.8 versions.
+* Moving to latest Java 8 and Clojure 1.8 versions.
+
+* Latest redis and logging libraries.
 
 ## Fixes
 
