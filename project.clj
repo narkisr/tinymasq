@@ -3,20 +3,20 @@
   :url "https://github.com/narkisr/tinymasq"
   :license  {:name "Apache License, Version 2.0" :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
   :dependencies [
-      [org.clojure/clojure "1.6.0"]
-      [com.taoensso/carmine "2.7.0"] 
+      [org.clojure/clojure "1.8.0"]
+      [com.taoensso/carmine "2.11.1"] 
       [dnsjava/dnsjava "2.1.6"]
-      [com.taoensso/timbre "3.3.1"]
+      [com.taoensso/timbre "4.1.4"]
       [org.clojure/core.incubator "0.1.3"]
       [org.clojure/core.cache "0.6.3"] 
       [org.clojure/core.async "0.1.346.0-17112a-alpha"]
       ; http api
       [ring/ring-ssl "0.2.1"]
-      [ring-middleware-format "0.4.0"]
-      [ring/ring-jetty-adapter "1.3.1"]
+      [ring-middleware-format "0.5.0"]
+      [ring/ring-jetty-adapter "1.3.2"]
       [com.cemerick/friend "0.2.1"] 
-      [ring "1.3.1"]
-      [compojure "1.1.9" :exclusions  [ring/ring-core]]]
+      [ring "1.3.2"]
+      [compojure "1.3.4" :exclusions  [ring/ring-core]]]
   
   :exclusions [org.clojure/clojure org.clojure/core.cache]
   :profiles {
